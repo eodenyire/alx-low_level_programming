@@ -1,7 +1,7 @@
 #include "hash_tables.h"
 
 /**
- * hash_table_print - prints the keys and values of the hash table
+ * hash_table_print - This prints the keys and values of the hash table
  *
  * @ht: pointer to the hash table
  * Return: no return
