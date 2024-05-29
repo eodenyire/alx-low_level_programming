@@ -1,17 +1,22 @@
 #!/usr/bin/python3
 """Module for calculating the perimeter of an island in a grid."""
 
+
 def island_perimeter(grid):
     """Calculate the perimeter of the island within the grid.
 
     Args:
-        grid (list): A list of lists representing the island, where 0 represents water and 1 represents land.
+        grid (list): A list of lists representing the island,
+        where 0 represents water and 1 represents land.
 
     Returns:
         int: The perimeter of the island.
 
-    The function iterates through each cell in the grid to count the number of land cells and neighboring edges.
-    It then calculates the perimeter using the formula: perimeter = land_cells * 4 - shared_edges * 2.
+    The function iterates through each cell in the grid to
+    count the number of land cells and neighboring edges.
+
+    It then calculates the perimeter using the formula:
+    perimeter = land_cells * 4 - shared_edges * 2.
     """
     width = len(grid[0])
     height = len(grid)
