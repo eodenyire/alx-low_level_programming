@@ -11,18 +11,18 @@ $(NAME): $(OBJ)
 	$(CC) $(OBJ) -o $(NAME)
 
 main.o: main.c m.h
-	$(CC) $(CFLAGS) -c main.c -o main.o
+	$(CC) -c main.c
 
 school.o: school.c m.h
-	$(CC) $(CFLAGS) -c school.c -o school.o
+	$(CC) -c school.c
 
 clean:
-	$(RM) *~
+	${RM} *~
 
 oclean:
-	$(RM) $(OBJ)
+	${RM} ${OBJ}
 
 fclean: clean
-	$(RM) $(OBJ) $(NAME)
+	${RM} ${NAME}
 
 re: fclean all
