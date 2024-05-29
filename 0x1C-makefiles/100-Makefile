@@ -1,8 +1,7 @@
 CC = gcc
 SRC = main.c school.c
-OBJ = $(SRC:.c=.o)
+OBJ = main.o school.o
 NAME = school
-RM = rm -f
 CFLAGS = -Wall -Werror -Wextra -pedantic
 
 all: $(NAME)
@@ -11,18 +10,18 @@ $(NAME): $(OBJ)
 	$(CC) $(OBJ) -o $(NAME)
 
 main.o: main.c m.h
-	$(CC) -c main.c
+	@if [ -f m.h ]; then $(CC) -c main.c; else echo "Header file m.h is missing."; exit 1; fi
 
 school.o: school.c m.h
-	$(CC) -c school.c
+	@if [ -f m.h ]; then $(CC) -c school.c; else echo "Header file m.h is missing."; exit 1; fi
 
 clean:
-	${RM} *~
+	@$(RM) *~
 
 oclean:
-	${RM} ${OBJ}
+	@$(RM) $(OBJ)
 
 fclean: clean
-	${RM} ${NAME}
+	@$(RM) $(NAME)
 
 re: fclean all
