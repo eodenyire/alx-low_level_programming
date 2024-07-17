@@ -1,5 +1,6 @@
-#include "search_algos.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include "search_algos.h"
 
 /**
  * print_array - prints an array of integers
