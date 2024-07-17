@@ -8,7 +8,6 @@
 #include <math.h>
 #include <stdlib.h>
 
-
 int linear_search(int *array, size_t size, int value);
 int binary_search(int *array, size_t size, int value);
 int int_index(int *array, int size, int (*cmp)(int));
