@@ -15,3 +15,4 @@ int int_index(int *array, int size, int (*cmp)(int));
 int interpolation_search(int *array, size_t size, int value);
 
 #endif
+
