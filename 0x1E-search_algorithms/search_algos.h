@@ -1,5 +1,3 @@
-#ifndef FUNCTION_POINTER_H
-#define FUNCTION_POINTER_H
 #ifndef SEARCH_ALGOS_H
 #define SEARCH_ALGOS_H
 #include <stddef.h>
