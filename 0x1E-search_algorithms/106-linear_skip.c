@@ -5,12 +5,22 @@ skiplist_t *recurse_express(skiplist_t *probe, int value);
 skiplist_t *find_list_end(skiplist_t *probe);
 
 /**
- * linear_skip - perform search with skip list
- * @list: list to search
- * @value: search value
+ * linear_skip - Search for a value in a skip list using the linear skip
+ *               algorithm.
+ * @list: A pointer to the head of the skip list to search through.
+ * @value: The integer value to search for within the skip list.
  *
- * Return: matching node; NULL if not found
+ * Description:
+ * This function searches for a specific value in a skip list by first
+ * traversing the express lane to identify a potential block where the
+ * value might be present. After locating the possible range, it performs
+ * a linear search within that block to find the exact node containing
+ * the value.
+ *
+ * Return: A pointer to the node containing the value if found, 
+ *         otherwise NULL.
  */
+
 skiplist_t *linear_skip(skiplist_t *list, int value)
 {
 	skiplist_t *zone = NULL;
@@ -26,12 +36,23 @@ skiplist_t *linear_skip(skiplist_t *list, int value)
 		return (recurse_normal(zone, zone->express, value));
 }
 /**
- * recurse_express - search express list
- * @probe: search pointer
- * @value: search value
+ * recurse_express - Search for a value in the express lane of a skip list.
+ * @probe: A pointer to the current node in the skip list's express lane.
+ * @value: The integer value to search for within the express lane.
  *
- * Return: pointer to match or match range; NULL if not in range
+ * Description:
+ * This function recursively searches through the express lane of a skip
+ * list to locate a node or a range where the value might be present. 
+ * If the express lane is exhausted or a node with a value greater than
+ * or equal to the search value is found, the function identifies the
+ * range within which to perform a linear search.
+ *
+ * Return: A pointer to the node where the value might be located or 
+ *         the node immediately before the express lane node where the
+ *         value might be in the next range. If the end of the express lane
+ *         is reached without finding a range, it returns NULL.
  */
+
 skiplist_t *recurse_express(skiplist_t *probe, int value)
 {
 	skiplist_t *last = NULL;
