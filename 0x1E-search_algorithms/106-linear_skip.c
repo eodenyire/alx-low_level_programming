@@ -5,11 +5,11 @@ skiplist_t *recurse_express(skiplist_t *probe, int value);
 skiplist_t *find_list_end(skiplist_t *probe);
 
 /**
- * Linear_skip - Performing a search with skip list
- * @list: List to search through
- * @value: The search value
+ * linear_skip - perform search with skip list
+ * @list: list to search
+ * @value: search value
  *
- * Return: matching node; 
+ * Return: matching node; NULL if not found
  */
 skiplist_t *linear_skip(skiplist_t *list, int value)
 {
@@ -26,11 +26,11 @@ skiplist_t *linear_skip(skiplist_t *list, int value)
 		return (recurse_normal(zone, zone->express, value));
 }
 /**
- * recurse_express - Searching the express list
- * @probe: The search pointer
- * @value: The search value
+ * recurse_express - search express list
+ * @probe: search pointer
+ * @value: search value
  *
- * Return: The pointer to match or match range; NULL if not in range
+ * Return: pointer to match or match range; NULL if not in range
  */
 skiplist_t *recurse_express(skiplist_t *probe, int value)
 {
@@ -57,12 +57,12 @@ probe->index, probe->express->index);
 		return (recurse_express(probe->express, value));
 }
 /**
- * recurse_normal - Searching the normal list
- * @probe: The search pointer
- * @stop: The endpoint of subsearch; either express node or NULL
- * @value: The search value
+ * recurse_normal - search normal list
+ * @probe: search pointer
+ * @stop: endpoint of subsearch; either express node or NULL
+ * @value: search value
  *
- * Return: The pointer to match; NULL if not found
+ * Return: pointer to match; NULL if not found
  */
 skiplist_t *recurse_normal(skiplist_t *probe, skiplist_t *stop, int value)
 {
@@ -83,10 +83,10 @@ probe->index, probe->n);
 		return (recurse_normal(probe->next, stop, value));
 }
 /**
- * find_list_end - Finding the last node
- * @probe: The search pointer
+ * find_list_end - find last node
+ * @probe: search pointer
  *
- * Return: The pointer to final node
+ * Return: pointer to final node
  */
 skiplist_t *find_list_end(skiplist_t *probe)
 {
