@@ -5,8 +5,9 @@ skiplist_t *recurse_express(skiplist_t *probe, int value);
 skiplist_t *find_list_end(skiplist_t *probe);
 
 /**
- * linear_skip - Search for a value in a skip list using the linear skip
- *               algorithm.
+ * linear_skip - Search for a value in a skip list using the
+ * 		linear skip algorithm.
+               
  * @list: A pointer to the head of the skip list to search through.
  * @value: The integer value to search for within the skip list.
  *
