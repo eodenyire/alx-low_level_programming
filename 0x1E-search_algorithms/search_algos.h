@@ -8,7 +8,7 @@
 
 /**
  * Linear_skip - Search for a value in a skip list using the linear
-   skip algorithm.
+ * 		 skip algorithm.
  * @list: A pointer to the head of the skip list to search through.
  * @value: The integer value to search for within the skip list.
  *
@@ -20,7 +20,7 @@
  * within that block to find the exact node containing the value.
  *
  * Return: A pointer to the node containing the value if found, 
- * otherwise NULL.
+ * 	   otherwise NULL.
  */
 
 typedef struct listint_s
