@@ -6,17 +6,23 @@
 #include <stdlib.h>
 #include <math.h>
 
-/* STRUCTS */
 /**
- * struct listint_s - singly linked list
+ * Linear_skip - Search for a value in a skip list using the linear
+   skip algorithm.
+ * @list: A pointer to the head of the skip list to search through.
+ * @value: The integer value to search for within the skip list.
  *
- * @n: Integer
- * @index: Index of the node in the list
- * @next: Pointer to the next node
+ * Description: 
+ * This function performs a search for a specific value in a skip list. 
+ * It first traverses the express lane to locate a block where the value
+ * might be present. 
+ * After identifying a potential range, it performs a linear search 
+ * within that block to find the exact node containing the value.
  *
- * Description: singly linked list node structure
- * for Holberton project
+ * Return: A pointer to the node containing the value if found, 
+ * otherwise NULL.
  */
+
 typedef struct listint_s
 {
 	int n;
