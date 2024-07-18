@@ -30,15 +30,18 @@ typedef struct listint_s
 } listint_t;
 
 /**
- * struct skiplist_s - Singly linked list with an express lane
+ * struct skiplist_s - Singly linked list with an express lane.
  *
- * @n: Integer
- * @index: Index of the node in the list
- * @next: Pointer to the next node
- * @express: Pointer to the next node in the express lane
+ * @n: Integer value stored in the node.
+ * @index: Index of the node in the list.
+ * @next: Pointer to the next node in the list.
+ * @express: Pointer to the next node in the express lane.
  *
- * Description: singly linked list node structure with an express lane
- * for Holberton project
+ * Description:
+ * This structure represents a node in a singly linked list that includes
+ * an express lane for faster access to nodes further down the list. 
+ * The express lane allows for quicker traversal by skipping over some 
+ * nodes.
  */
 typedef struct skiplist_s
 {
