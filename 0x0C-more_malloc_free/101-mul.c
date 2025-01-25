@@ -1,127 +1,102 @@
-
 #include "main.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include <ctype.h>
+#define ERR_MSG "Error"
 
 /**
- * _is_zero - determines if any number is zero
- * @argv: argument vector.
- *
- * Return: no return.
+ * is_digit - ascertain if there is a non-digit char
+ * @s: string in question
+ * Return: 1 if all are numbers, else 0
  */
-void _is_zero(char *argv[])
+int is_digit(char *s)
 {
-	int i, isn1 = 1, isn2 = 1;
+	int content;
 
-	for (i = 0; argv[1][i]; i++)
-		if (argv[1][i] != '0')
-		{
-			isn1 = 0;
-			break;
-		}
+	content = 0;
 
-	for (i = 0; argv[2][i]; i++)
-		if (argv[2][i] != '0')
-		{
-			isn2 = 0;
-			break;
-		}
-
-	if (isn1 == 1 || isn2 == 1)
+	while (s[content])
 	{
-		printf("0\n");
-		exit(0);
+		if (s[content] < '0' || s[content] > '9')
+			return (0);
+		content++;
 	}
+	return (1);
 }
 
 /**
- * _initialize_array - set memery to zero in a new array
- * @ar: char array.
- * @lar: length of the char array.
- *
- * Return: pointer of a char array.
+ * _strlen - finds the length of a string
+ * @s: string in question
+ * Return: string length
  */
-char *_initialize_array(char *ar, int lar)
+int _strlen(char *s)
 {
-	int i = 0;
+	int content;
 
-	for (i = 0; i < lar; i++)
-		ar[i] = '0';
-	ar[lar] = '\0';
-	return (ar);
+	content = 0;
+
+	while (s[content] != '\0')
+	{
+		content++;
+	}
+	return (content);
 }
 
 /**
- * _checknum - determines length of the number
- * and checks if number is in base 10.
- * @argv: arguments vector.
- * @n: row of the array.
- *
- * Return: length of the number.
+ * errors - exposes isses in the main function
  */
-int _checknum(char *argv[], int n)
+void errors(void)
 {
-	int ln;
-
-	for (ln = 0; argv[n][ln]; ln++)
-		if (!isdigit(argv[n][ln]))
-		{
-			printf("Error\n");
-			exit(98);
-		}
-
-	return (ln);
+	printf("Error\n");
+	exit(98);
 }
 
 /**
- * main - Entry point.
- * program that multiplies two positive numbers.
- * @argc: number of arguments.
- * @argv: arguments vector.
+ * main - function to multiply two unsigned ints
+ * @argc: amount of argumets in the array
+ * @argv: arguments being passed
  *
- * Return: 0 - success.
+ * Return: void
  */
 int main(int argc, char *argv[])
 {
-	int ln1, ln2, lnout, add, addl, i, j, k, ca;
-	char *nout;
+	char *string1, *string2;
+	int length1, length2, new_length, content, mod, num1, num2, *mul, a = 0;
 
-	if (argc != 3)
-		printf("Error\n"), exit(98);
-	ln1 = _checknum(argv, 1), ln2 = _checknum(argv, 2);
-	_is_zero(argv), lnout = ln1 + ln2, nout = malloc(lnout + 1);
-	if (nout == NULL)
-		printf("Error\n"), exit(98);
-	nout = _initialize_array(nout, lnout);
-	k = lnout - 1, i = ln1 - 1, j = ln2 - 1, ca = addl = 0;
-	for (; k >= 0; k--, i--)
+	string1 = argv[1], string2 = argv[2];
+	if (argc != 3 || !is_digit(string1) || !is_digit(string2))
+		errors();
+	length1 = _strlen(string1);
+	length2 = _strlen(string2);
+	new_length = length1 + length2 + 1;
+	mul = malloc(sizeof(int) * new_length);
+	if (!mul)
+		return (1);
+	for (content = 0; content <= length1 + length2; content++)
+		mul[content] = 0;
+	for (length1 = length1 - 1; length1 >= 0; length1--)
 	{
-		if (i < 0)
+		num1 = string1[length1] - '0';
+		mod = 0;
+		for (length2 = _strlen(string2) - 1; length2 >= 0; length2--)
 		{
-			if (addl > 0)
-			{
-				add = (nout[k] - '0') + addl;
-				if (add > 9)
-					nout[k - 1] = (add / 10) + '0';
-				nout[k] = (add % 10) + '0';
-			}
-			i = ln1 - 1, j--, addl = 0, ca++, k = lnout - (1 + ca);
+			num2 = string2[length2] - '0';
+			mod += mul[length1 + length2 + 1] + (num1 * num2);
+			mul[length1 + length2 + 1] = mod % 10;
+			mod /= 10;
 		}
-		if (j < 0)
-		{
-			if (nout[0] != '0')
-				break;
-			lnout--;
-			free(nout), nout = malloc(lnout + 1), nout = _initialize_array(nout, lnout);
-			k = lnout - 1, i = ln1 - 1, j = ln2 - 1, ca = addl = 0;
-		}
-		if (j >= 0)
-		{
-			add = ((argv[1][i] - '0') * (argv[2][j] - '0')) + (nout[k] - '0') + addl;
-			addl = add / 10, nout[k] = (add % 10) + '0';
-		}
+		if (mod > 0)
+			mul[length1 + length2 + 1] += mod;
 	}
-	printf("%s\n", nout);
+	for (content = 0; content < new_length - 1; content++)
+	{
+		if (mul[content])
+			a = 1;
+		if (a)
+			_putchar(mul[content] + '0');
+	}
+	if (!a)
+		_putchar('0');
+	_putchar('\n');
+	free(mul);
 	return (0);
 }
