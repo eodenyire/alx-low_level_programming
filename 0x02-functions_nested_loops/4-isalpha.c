@@ -1,23 +1,13 @@
-#include "holberton.h"
+#include "main.h"
 /**
- * _isalpha - Check Main
- * @c: An input character
- * Description: function returns 1 if the character is a
- * letter, lowercase or uppercase.
- * Return: 1 or 0 in otherwise.
+ * _isalpha - test if char is a letter
+ * @c: is the test char
+ * Return: 1 if char c is a letter, else 0.
  */
 int _isalpha(int c)
 {
-	char lower, upper;
-	int isletter = 0;
-
-	for (lower = 'a'; lower <= 'z'; lower++)
-	{
-		for (upper = 'A'; upper <= 'Z'; upper++)
-		{
-			if (c == lower || c == upper)
-				isletter = 1;
-		}
-	}
-	return (isletter);
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+		return (1);
+	else
+		return (0);
 }
