@@ -1,102 +1,113 @@
-#include "main.h"
-#include <stdlib.h>
 #include <stdio.h>
-#define ERR_MSG "Error"
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
 
 /**
- * is_digit - ascertain if there is a non-digit char
- * @s: string in question
- * Return: 1 if all are numbers, else 0
- */
-int is_digit(char *s)
-{
-	int content;
-
-	content = 0;
-
-	while (s[content])
-	{
-		if (s[content] < '0' || s[content] > '9')
-			return (0);
-		content++;
-	}
-	return (1);
-}
-
-/**
- * _strlen - finds the length of a string
- * @s: string in question
- * Return: string length
- */
-int _strlen(char *s)
-{
-	int content;
-
-	content = 0;
-
-	while (s[content] != '\0')
-	{
-		content++;
-	}
-	return (content);
-}
-
-/**
- * errors - exposes isses in the main function
- */
-void errors(void)
-{
-	printf("Error\n");
-	exit(98);
-}
-
-/**
- * main - function to multiply two unsigned ints
- * @argc: amount of argumets in the array
- * @argv: arguments being passed
+ * is_digit_string - Checks if a string consists only of digits.
+ * @str: The string to check.
  *
- * Return: void
+ * Return: 1 if the string is all digits, 0 otherwise.
  */
+int is_digit_string(const char *str)
+{
+    while (*str)
+    {
+        if (!isdigit(*str))
+            return 0;
+        str++;
+    }
+    return 1;
+}
+
+/**
+ * multiply - Multiplies two large numbers represented as strings.
+ * @num1: The first number.
+ * @num2: The second number.
+ *
+ * Return: The result as a string. Caller is responsible for freeing the memory.
+ */
+char *multiply(const char *num1, const char *num2)
+{
+    int len1 = strlen(num1);
+    int len2 = strlen(num2);
+    int len_result = len1 + len2;
+    char *result = calloc(len_result + 1, sizeof(char));
+    int i, j, carry, n1, n2, sum;
+
+    if (!result)
+    {
+        fprintf(stderr, "Error\n");
+        exit(98);
+    }
+
+    for (i = len1 - 1; i >= 0; i--)
+    {
+        carry = 0;
+        n1 = num1[i] - '0';
+
+        for (j = len2 - 1; j >= 0; j--)
+        {
+            n2 = num2[j] - '0';
+            sum = n1 * n2 + (result[i + j + 1] - '0') + carry;
+            carry = sum / 10;
+            result[i + j + 1] = (sum % 10) + '0';
+        }
+        result[i + j + 1] += carry;
+    }
+
+    // Remove leading zeros
+    for (i = 0; i < len_result; i++)
+    {
+        if (result[i] != '0')
+            break;
+    }
+
+    if (i == len_result)
+    {
+        // Result is zero
+        char *zero_result = calloc(2, sizeof(char));
+        if (!zero_result)
+        {
+            free(result);
+            fprintf(stderr, "Error\n");
+            exit(98);
+        }
+        zero_result[0] = '0';
+        free(result);
+        return zero_result;
+    }
+
+    char *final_result = strdup(result + i);
+    free(result);
+    if (!final_result)
+    {
+        fprintf(stderr, "Error\n");
+        exit(98);
+    }
+
+    return final_result;
+}
+
 int main(int argc, char *argv[])
 {
-	char *string1, *string2;
-	int length1, length2, new_length, content, mod, num1, num2, *mul, a = 0;
+    char *result;
 
-	string1 = argv[1], string2 = argv[2];
-	if (argc != 3 || !is_digit(string1) || !is_digit(string2))
-		errors();
-	length1 = _strlen(string1);
-	length2 = _strlen(string2);
-	new_length = length1 + length2 + 1;
-	mul = malloc(sizeof(int) * new_length);
-	if (!mul)
-		return (1);
-	for (content = 0; content <= length1 + length2; content++)
-		mul[content] = 0;
-	for (length1 = length1 - 1; length1 >= 0; length1--)
-	{
-		num1 = string1[length1] - '0';
-		mod = 0;
-		for (length2 = _strlen(string2) - 1; length2 >= 0; length2--)
-		{
-			num2 = string2[length2] - '0';
-			mod += mul[length1 + length2 + 1] + (num1 * num2);
-			mul[length1 + length2 + 1] = mod % 10;
-			mod /= 10;
-		}
-		if (mod > 0)
-			mul[length1 + length2 + 1] += mod;
-	}
-	for (content = 0; content < new_length - 1; content++)
-	{
-		if (mul[content])
-			a = 1;
-		if (a)
-			_putchar(mul[content] + '0');
-	}
-	if (!a)
-		_putchar('0');
-	_putchar('\n');
-	free(mul);
-	return (0);
+    if (argc != 3)
+    {
+        fprintf(stderr, "Error\n");
+        exit(98);
+    }
+
+    if (!is_digit_string(argv[1]) || !is_digit_string(argv[2]))
+    {
+        fprintf(stderr, "Error\n");
+        exit(98);
+    }
+
+    result = multiply(argv[1], argv[2]);
+    printf("%s\n", result);
+    free(result);
+
+    return 0;
 }
