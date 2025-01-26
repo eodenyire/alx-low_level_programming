@@ -1,113 +1,119 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
 #include <string.h>
+#include <ctype.h>
+
+#define ERR_MSG "Error"
 
 /**
- * is_digit_string - Checks if a string consists only of digits.
- * @str: The string to check.
- *
- * Return: 1 if the string is all digits, 0 otherwise.
+ * is_digit - Checks if a string contains only digits.
+ * @s: The string to check.
+ * Return: 1 if the string contains only digits, 0 otherwise.
  */
-int is_digit_string(const char *str)
+int is_digit(char *s)
 {
-    while (*str)
+    for (int i = 0; s[i] != '\0'; i++)
     {
-        if (!isdigit(*str))
+        if (!isdigit(s[i]))
             return 0;
-        str++;
     }
     return 1;
 }
 
 /**
- * multiply - Multiplies two large numbers represented as strings.
- * @num1: The first number.
- * @num2: The second number.
- *
- * Return: The result as a string. Caller is responsible for freeing the memory.
+ * _strlen - Calculates the length of a string.
+ * @s: The string to measure.
+ * Return: The length of the string.
  */
-char *multiply(const char *num1, const char *num2)
+int _strlen(char *s)
 {
-    int len1 = strlen(num1);
-    int len2 = strlen(num2);
-    int len_result = len1 + len2;
-    char *result = calloc(len_result + 1, sizeof(char));
-    int i, j, carry, n1, n2, sum;
-
-    if (!result)
-    {
-        fprintf(stderr, "Error\n");
-        exit(98);
-    }
-
-    for (i = len1 - 1; i >= 0; i--)
-    {
-        carry = 0;
-        n1 = num1[i] - '0';
-
-        for (j = len2 - 1; j >= 0; j--)
-        {
-            n2 = num2[j] - '0';
-            sum = n1 * n2 + (result[i + j + 1] - '0') + carry;
-            carry = sum / 10;
-            result[i + j + 1] = (sum % 10) + '0';
-        }
-        result[i + j + 1] += carry;
-    }
-
-    // Remove leading zeros
-    for (i = 0; i < len_result; i++)
-    {
-        if (result[i] != '0')
-            break;
-    }
-
-    if (i == len_result)
-    {
-        // Result is zero
-        char *zero_result = calloc(2, sizeof(char));
-        if (!zero_result)
-        {
-            free(result);
-            fprintf(stderr, "Error\n");
-            exit(98);
-        }
-        zero_result[0] = '0';
-        free(result);
-        return zero_result;
-    }
-
-    char *final_result = strdup(result + i);
-    free(result);
-    if (!final_result)
-    {
-        fprintf(stderr, "Error\n");
-        exit(98);
-    }
-
-    return final_result;
+    int length = 0;
+    while (s[length] != '\0')
+        length++;
+    return length;
 }
 
+/**
+ * errors - Prints an error message and exits with status 98.
+ */
+void errors(void)
+{
+    printf("%s\n", ERR_MSG);
+    exit(98);
+}
+
+/**
+ * multiply - Multiplies two large numbers represented as strings.
+ * @num1: The first number as a string.
+ * @num2: The second number as a string.
+ * Return: A string representing the product of num1 and num2.
+ */
+char *multiply(char *num1, char *num2)
+{
+    int len1 = _strlen(num1);
+    int len2 = _strlen(num2);
+    int len_result = len1 + len2;
+    int *result = (int *)calloc(len_result, sizeof(int));
+    if (!result)
+        return NULL;
+
+    for (int i = len1 - 1; i >= 0; i--)
+    {
+        for (int j = len2 - 1; j >= 0; j--)
+        {
+            int mul = (num1[i] - '0') * (num2[j] - '0');
+            int sum = mul + result[i + j + 1];
+            result[i + j + 1] = sum % 10;
+            result[i + j] += sum / 10;
+        }
+    }
+
+    char *product = (char *)malloc(len_result + 1);
+    if (!product)
+    {
+        free(result);
+        return NULL;
+    }
+
+    int index = 0;
+    while (index < len_result && result[index] == 0)
+        index++;
+
+    if (index == len_result)
+    {
+        product[0] = '0';
+        product[1] = '\0';
+    }
+    else
+    {
+        int i = 0;
+        while (index < len_result)
+            product[i++] = result[index++] + '0';
+        product[i] = '\0';
+    }
+
+    free(result);
+    return product;
+}
+
+/**
+ * main - Entry point of the program.
+ * @argc: The number of command-line arguments.
+ * @argv: The command-line arguments.
+ * Return: 0 on success, 98 on error.
+ */
 int main(int argc, char *argv[])
 {
-    char *result;
+    if (argc != 3 || !is_digit(argv[1]) || !is_digit(argv[2]))
+        errors();
 
-    if (argc != 3)
+    char *result = multiply(argv[1], argv[2]);
+    if (!result)
     {
-        fprintf(stderr, "Error\n");
-        exit(98);
+        errors();
     }
 
-    if (!is_digit_string(argv[1]) || !is_digit_string(argv[2]))
-    {
-        fprintf(stderr, "Error\n");
-        exit(98);
-    }
-
-    result = multiply(argv[1], argv[2]);
     printf("%s\n", result);
     free(result);
-
     return 0;
 }
