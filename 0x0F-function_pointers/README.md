@@ -81,17 +81,21 @@ To compile and test the programs:
 ```bash
 gcc -Wall -pedantic -Werror -Wextra -std=gnu89 0-main.c 0-print_name.c -o a
 ./a
+```
 
 ```bash
 gcc -Wall -pedantic -Werror -Wextra -std=gnu89 1-main.c 1-array_iterator.c -o b
 ./b
+```
 
 gcc -Wall -pedantic -Werror -Wextra -std=gnu89 2-main.c 2-int_index.c -o c
 ./c
+```
 
 ```bash
 gcc -Wall -pedantic -Werror -Wextra -std=gnu89 3-main.c 3-op_functions.c 3-get_op_func.c -o calc
 ./calc 1 + 1
+```
 
 
 ### Acknowledgements
